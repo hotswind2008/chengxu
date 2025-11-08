@@ -16,25 +16,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Setup Python 3.9
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.9'
 
-      - name: Install dependencies
+      - name: Install pinned dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pyinstaller
+          python -m pip install --upgrade pip wheel setuptools
+          pip install "numpy==1.26.*" "pillow==10.*" "matplotlib==3.8.*" "pyinstaller==6.6.*"
+          python - << 'PY'
+          import sys, tkinter
+          print("Tk version:", getattr(tkinter, "TkVersion", "unknown"), file=sys.stderr)
+          PY
 
       - name: Build EXE - normal_distribution_demo
         run: |
+          set MPLBACKEND=TkAgg
           pyinstaller --noconfirm --clean -w ^
             --name normal_distribution_demo ^
             --collect-data matplotlib ^
             --collect-submodules matplotlib ^
             --collect-submodules matplotlib.backends ^
             --hidden-import=tkinter ^
+            --hidden-import=matplotlib.backends.backend_tkagg ^
+            --hidden-import=tkinter.filedialog ^
+            --hidden-import=tkinter.messagebox ^
             normal_distribution_demo.py
 
       - name: Upload artifact - normal_distribution_demo
@@ -46,12 +53,16 @@ jobs:
 
       - name: Build EXE - number_line_fraction_visualization
         run: |
+          set MPLBACKEND=TkAgg
           pyinstaller --noconfirm --clean -w ^
             --name number_line_fraction_visualization ^
             --collect-data matplotlib ^
             --collect-submodules matplotlib ^
             --collect-submodules matplotlib.backends ^
             --hidden-import=tkinter ^
+            --hidden-import=matplotlib.backends.backend_tkagg ^
+            --hidden-import=tkinter.filedialog ^
+            --hidden-import=tkinter.messagebox ^
             number_line_fraction_visualization.py
 
       - name: Upload artifact - number_line_fraction_visualization
