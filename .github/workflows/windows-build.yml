@@ -32,16 +32,16 @@ jobs:
 
       - name: Build EXE - normal_distribution_demo
         run: |
-          set MPLBACKEND=TkAgg
-          pyinstaller --noconfirm --clean -w ^
-            --name normal_distribution_demo ^
-            --collect-data matplotlib ^
-            --collect-submodules matplotlib ^
-            --collect-submodules matplotlib.backends ^
-            --hidden-import=tkinter ^
-            --hidden-import=matplotlib.backends.backend_tkagg ^
-            --hidden-import=tkinter.filedialog ^
-            --hidden-import=tkinter.messagebox ^
+          $env:MPLBACKEND = 'TkAgg'
+          pyinstaller --noconfirm --clean -w `
+            --name normal_distribution_demo `
+            --collect-data matplotlib `
+            --collect-submodules matplotlib `
+            --collect-submodules matplotlib.backends `
+            --hidden-import=tkinter `
+            --hidden-import=matplotlib.backends.backend_tkagg `
+            --hidden-import=tkinter.filedialog `
+            --hidden-import=tkinter.messagebox `
             normal_distribution_demo.py
 
       - name: Upload artifact - normal_distribution_demo
@@ -53,16 +53,16 @@ jobs:
 
       - name: Build EXE - number_line_fraction_visualization
         run: |
-          set MPLBACKEND=TkAgg
-          pyinstaller --noconfirm --clean -w ^
-            --name number_line_fraction_visualization ^
-            --collect-data matplotlib ^
-            --collect-submodules matplotlib ^
-            --collect-submodules matplotlib.backends ^
-            --hidden-import=tkinter ^
-            --hidden-import=matplotlib.backends.backend_tkagg ^
-            --hidden-import=tkinter.filedialog ^
-            --hidden-import=tkinter.messagebox ^
+          $env:MPLBACKEND = 'TkAgg'
+          pyinstaller --noconfirm --clean -w `
+            --name number_line_fraction_visualization `
+            --collect-data matplotlib `
+            --collect-submodules matplotlib `
+            --collect-submodules matplotlib.backends `
+            --hidden-import=tkinter `
+            --hidden-import=matplotlib.backends.backend_tkagg `
+            --hidden-import=tkinter.filedialog `
+            --hidden-import=tkinter.messagebox `
             number_line_fraction_visualization.py
 
       - name: Upload artifact - number_line_fraction_visualization
