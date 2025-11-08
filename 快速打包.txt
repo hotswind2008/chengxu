@@ -1,0 +1,58 @@
+====================================
+三门问题游戏 - Windows EXE 快速打包
+====================================
+
+【重要提示】
+您当前在 macOS 系统上，无法直接打包 Windows exe 文件。
+需要在 Windows 电脑上进行打包。
+
+====================================
+在 Windows 电脑上执行以下命令：
+====================================
+
+1. 安装依赖：
+   pip install pillow matplotlib pyinstaller
+
+2. 打包命令（复制粘贴到CMD中）：
+   pyinstaller --name=三门问题游戏 --onefile --windowed --clean monty_hall_final.py
+
+3. 完成！
+   可执行文件位置：dist\三门问题游戏.exe
+
+====================================
+文件传输到Windows的方法：
+====================================
+
+方法1：U盘/移动硬盘
+- 复制 monty_hall_final.py 到U盘
+- 在Windows电脑上粘贴并执行打包命令
+
+方法2：网盘（推荐）
+- 上传到百度网盘/OneDrive等
+- 在Windows电脑上下载
+
+方法3：邮件
+- 将 monty_hall_final.py 作为附件发送到自己邮箱
+- 在Windows电脑上下载
+
+====================================
+完整打包流程（Windows CMD）：
+====================================
+
+# 切换到文件目录
+cd C:\Users\你的用户名\Desktop
+
+# 安装 PyInstaller（仅首次需要）
+pip install pyinstaller
+
+# 打包
+pyinstaller --name=三门问题游戏 --onefile --windowed --clean monty_hall_final.py
+
+# 完成后，在 dist 文件夹找到：三门问题游戏.exe
+
+====================================
+
+
+
+
+
