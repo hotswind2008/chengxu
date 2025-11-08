@@ -1,4 +1,4 @@
-name: Build Windows EXE
+name: Build Windows EXE # retrigger
 
 on:
   workflow_dispatch:
