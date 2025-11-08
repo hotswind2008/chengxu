@@ -24,11 +24,8 @@ jobs:
       - name: Install pinned dependencies
         run: |
           python -m pip install --upgrade pip wheel setuptools
-          pip install "numpy==1.26.*" "pillow==10.*" "matplotlib==3.8.*" "pyinstaller==6.6.*"
-          python - << 'PY'
-          import sys, tkinter
-          print("Tk version:", getattr(tkinter, "TkVersion", "unknown"), file=sys.stderr)
-          PY
+          python -m pip install "numpy==1.26.*" "pillow==10.*" "matplotlib==3.8.*" "pyinstaller==6.6.*"
+          python -c "import tkinter; print('Tk version:', getattr(tkinter, 'TkVersion', 'unknown'))"
 
       - name: Build EXE - normal_distribution_demo
         run: |
