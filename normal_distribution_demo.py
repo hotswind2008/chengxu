@@ -8,7 +8,15 @@ import argparse
 import os
 import matplotlib
 # 若外部已通过环境变量指定后端（如 MPLBACKEND=Agg），则尊重不覆盖
-if os.environ.get('MPLBACKEND') is None:
+_env_backend = os.environ.get('MPLBACKEND')
+# 若明确为 Agg，则忽略该设置，避免在 Windows 可执行版中走无界面路径
+if _env_backend and _env_backend.lower() == 'agg':
+    try:
+        del os.environ['MPLBACKEND']
+    except Exception:
+        pass
+    _env_backend = None
+if _env_backend is None:
     # Windows 上优先强制 TkAgg，避免选择到不兼容后端
     if sys.platform.startswith('win'):
         try:
