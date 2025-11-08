@@ -9,21 +9,28 @@ import os
 import matplotlib
 # 若外部已通过环境变量指定后端（如 MPLBACKEND=Agg），则尊重不覆盖
 if os.environ.get('MPLBACKEND') is None:
-    # 优先选择交互式后端，适配 macOS 等桌面环境；若不可用将自动降级
-    for _backend in ('MacOSX', 'TkAgg', 'Qt5Agg', 'QtAgg'):
+    # Windows 上优先强制 TkAgg，避免选择到不兼容后端
+    if sys.platform.startswith('win'):
         try:
-            matplotlib.use(_backend)
-            break
+            matplotlib.use('TkAgg')
         except Exception:
-            continue
+            pass
+    else:
+        # macOS / Linux：按优先级尝试
+        for _backend in ('MacOSX', 'TkAgg', 'Qt5Agg', 'QtAgg'):
+            try:
+                matplotlib.use(_backend)
+                break
+            except Exception:
+                continue
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
 import math
 from matplotlib.widgets import Slider
 
-# 设置中文字体
-plt.rcParams['font.sans-serif'] = ['Arial Unicode MS', 'SimHei', 'STHeiti']
+# 设置中文字体（包含 Windows 常见字体）
+plt.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'Arial Unicode MS', 'SimSun', 'STHeiti']
 plt.rcParams['axes.unicode_minus'] = False
 
 class NormalDistributionDemo:
@@ -515,6 +522,16 @@ def main():
         print(f"\n✗ 运行程序时出错: {str(e)}")
         import traceback
         traceback.print_exc()
+        # 在无控制台的打包环境下，弹出图形化错误提示（尽量不影响非GUI环境）
+        try:
+            import tkinter as _tk
+            from tkinter import messagebox as _mb
+            _root = _tk.Tk()
+            _root.withdraw()
+            _mb.showerror("程序错误", f"运行出错：{e}\n\n详情已打印到日志/控制台。")
+            _root.destroy()
+        except Exception:
+            pass
 
 if __name__ == "__main__":
     main()
