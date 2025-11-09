@@ -509,11 +509,11 @@ def main():
 
         backend = plt.get_backend().lower()
 
-        # 如指定 --save 或处于无GUI后端，则保存并退出
-        if args.save or ('agg' in backend):
+        # 如指定 --save 或处于无GUI后端(严格等于 agg) 则保存并退出
+        if args.save or (backend == 'agg'):
             outfile = 'normal_distribution.png'
             app.fig.savefig(outfile, dpi=300, facecolor='#F5F5DC', bbox_inches='tight')
-            if 'agg' in backend:
+            if backend == 'agg':
                 print(f"\n当前环境未启用图形界面（backend={backend}），已保存静态图片: {outfile}")
                 print("如需交互式窗口，请在本机终端运行: python normal_distribution_demo.py\n")
             else:
