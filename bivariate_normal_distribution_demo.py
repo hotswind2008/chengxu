@@ -82,7 +82,7 @@ class BivariateNormalDistributionDemo:
         self.rho_ref_for_limit = 0.0  # 用 ρ=0 估算全局上限，更贴近日常使用
 
         # 建图
-        self.default_figsize = (30, 18)  # 放大窗口尺寸
+        self.default_figsize = (16, 9)  # 调整默认窗口尺寸，适配常见屏幕
         self.fig = plt.figure(figsize=self.default_figsize)
         self.fig.patch.set_facecolor('#F5F5DC')
 
@@ -99,7 +99,8 @@ class BivariateNormalDistributionDemo:
             self.ax3d.dist = 4.2
         except Exception:
             pass
-        self.ax3d.set_position([0.05, 0.14, 0.92, 0.82])  # left, bottom, width, height
+        # 留足底部空间给两排滑块，避免在不同平台缩放时重叠
+        self.ax3d.set_position([0.06, 0.22, 0.90, 0.70])  # left, bottom, width, height
         # 叠加一个2D Axes用于“极速预览”的 imshow（与3D同位置，默认隐藏）
         self.ax2d = self.fig.add_axes(self.ax3d.get_position())
         self.ax2d.set_facecolor('#FFFFFF')
@@ -120,13 +121,13 @@ class BivariateNormalDistributionDemo:
 
         # 滑块区域
         # 两排布局：第一排 μx, μy, ρ；第二排 σx, σy 与重置按钮
-        self.ax_mux = plt.axes([0.12, 0.07, 0.28, 0.03])
-        self.ax_muy = plt.axes([0.46, 0.07, 0.28, 0.03])
-        self.ax_rho = plt.axes([0.80, 0.07, 0.12, 0.03])
+        self.ax_mux = plt.axes([0.08, 0.11, 0.30, 0.035])
+        self.ax_muy = plt.axes([0.42, 0.11, 0.30, 0.035])
+        self.ax_rho = plt.axes([0.76, 0.11, 0.16, 0.035])
 
-        self.ax_sigx = plt.axes([0.12, 0.02, 0.28, 0.03])
-        self.ax_sigy = plt.axes([0.46, 0.02, 0.28, 0.03])
-        self.ax_reset = plt.axes([0.80, 0.02, 0.12, 0.035])
+        self.ax_sigx = plt.axes([0.08, 0.055, 0.30, 0.035])
+        self.ax_sigy = plt.axes([0.42, 0.055, 0.30, 0.035])
+        self.ax_reset = plt.axes([0.76, 0.05, 0.16, 0.045])
 
         # 滑块控件
         self.slider_mux = Slider(self.ax_mux, 'μx', -5.0, 5.0, valinit=self.mu_x, valstep=0.1)
@@ -469,7 +470,6 @@ class BivariateNormalDistributionDemo:
             print(f"性能预设切换为 {preset}（'1'超流畅 / '2'均衡 / '3'高清）")
 
     def show(self):
-        plt.subplots_adjust(left=0.05, right=0.96, bottom=0.12, top=0.90)
         plt.show()
 
 
