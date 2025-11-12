@@ -1,0 +1,76 @@
+name: Build Windows EXE (bivariate normal demo)
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+    paths:
+      - 'bivariate_normal_distribution_demo.py'
+      - 'bivariate_normal_distribution_demo_win.spec'
+      - 'requirements.txt'
+      - '.github/workflows/build-windows-bivariate.yml'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Verify tkinter availability
+        run: |
+          python - << 'PY'
+          import tkinter
+          print("tkinter OK, version:", tkinter.TkVersion)
+          PY
+
+      - name: Build with PyInstaller (Windows spec)
+        run: |
+          pyinstaller --noconfirm --clean bivariate_normal_distribution_demo_win.spec
+
+      - name: List build outputs
+        run: |
+          dir dist
+          dir dist\\bivariate_normal_distribution_demo
+
+      - name: Zip dist folder
+        shell: powershell
+        run: |
+          Compress-Archive -Path dist\\bivariate_normal_distribution_demo\\* -DestinationPath bivariate_demo_win.zip -Force
+
+      - name: Upload artifact (folder)
+        uses: actions/upload-artifact@v4
+        with:
+          name: bivariate_normal_distribution_demo-dist
+          path: dist\\bivariate_normal_distribution_demo\\
+
+      - name: Upload artifact (zip)
+        uses: actions/upload-artifact@v4
+        with:
+          name: bivariate_demo_win
+          path: bivariate_demo_win.zip
+      
+      - name: Publish GitHub Release (on tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            bivariate_demo_win.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+
+
