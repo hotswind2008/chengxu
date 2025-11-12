@@ -3,13 +3,10 @@ name: Build Windows EXE (bivariate normal demo)
 on:
   workflow_dispatch:
   push:
+    branches:
+      - '**'
     tags:
       - 'v*'
-    paths:
-      - 'bivariate_normal_distribution_demo.py'
-      - 'bivariate_normal_distribution_demo_win.spec'
-      - 'requirements.txt'
-      - '.github/workflows/build-windows-bivariate.yml'
 
 jobs:
   build:
@@ -40,7 +37,7 @@ jobs:
 
       - name: Build with PyInstaller (Windows spec)
         env:
-          MPLBACKEND: Agg
+          MPLBACKEND: TkAgg
         run: |
           pyinstaller --noconfirm --clean bivariate_normal_distribution_demo_win.spec
 
