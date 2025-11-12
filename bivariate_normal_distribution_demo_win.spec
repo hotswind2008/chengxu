@@ -3,7 +3,7 @@ from PyInstaller.utils.hooks import collect_data_files
 from PyInstaller.utils.hooks import collect_submodules
 
 datas = []
-hiddenimports = ['tkinter']
+hiddenimports = ['tkinter', '_tkinter']
 datas += collect_data_files('matplotlib')
 hiddenimports += collect_submodules('matplotlib')
 hiddenimports += collect_submodules('matplotlib.backends')
@@ -32,7 +32,7 @@ exe = EXE(
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
-    upx=True,
+    upx=False,
     console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
@@ -45,7 +45,7 @@ coll = COLLECT(
     a.binaries,
     a.datas,
     strip=False,
-    upx=True,
+    upx=False,
     upx_exclude=[],
     name='bivariate_normal_distribution_demo',
 )

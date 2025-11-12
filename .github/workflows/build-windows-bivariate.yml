@@ -30,10 +30,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Show versions
+        run: |
+          python -V
+          pip show pyinstaller matplotlib
+
       - name: Verify tkinter availability
         run: python -c "import tkinter; print('tkinter OK, version:', tkinter.TkVersion)"
 
       - name: Build with PyInstaller (Windows spec)
+        env:
+          MPLBACKEND: Agg
         run: |
           pyinstaller --noconfirm --clean bivariate_normal_distribution_demo_win.spec
 
